@@ -1,0 +1,35 @@
+@import "../colors";
+
+.signIn {
+  background-color: $violet;
+
+  height: 100vh;
+  width: 100vw;
+
+  .signInWindow {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+
+    .title {
+      margin-bottom: 120px;
+      text-align: center;
+    }
+
+    .inputs {
+      display: flex;
+      flex-direction: column;
+
+      gap: 10px;
+    }
+
+    .btns {
+      margin-top: 100px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

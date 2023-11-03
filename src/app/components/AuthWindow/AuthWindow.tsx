@@ -2,6 +2,7 @@ import Button from "@/components/Button/Button";
 import styles from "./auth.module.scss";
 import { COLORS } from "../../../constants/colors";
 import Or from "../../../components/Or/Or";
+import Link from "next/link";
 
 const AuthWindow = () => {
   return (
@@ -16,15 +17,17 @@ const AuthWindow = () => {
         </header>
         <footer className={styles.authLogin}>
           <p>Do you have a profile ?</p>
-          <Button
-            style={{
-              border: `1px solid ${COLORS.white_main}`,
-              background: "none",
-              color: COLORS.yellow,
-            }}
-          >
-            SIGN IN
-          </Button>
+          <Link href={"/sign-in"}>
+            <Button
+              style={{
+                border: `1px solid ${COLORS.white_main}`,
+                background: "none",
+                color: COLORS.yellow,
+              }}
+            >
+              SIGN IN
+            </Button>
+          </Link>
         </footer>
       </main>
     </section>
