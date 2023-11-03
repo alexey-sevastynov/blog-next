@@ -1,5 +1,5 @@
-import styles from "./page.module.css";
+import AuthWindow from "./components/AuthWindow/AuthWindow";
 
 export default function Home() {
-  return <main className={styles.main}>Start project</main>;
+  return <AuthWindow />;
 }

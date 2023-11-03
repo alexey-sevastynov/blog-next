@@ -1,0 +1,35 @@
+@import "../../app/colors";
+
+.or {
+  position: relative;
+  height: 65px;
+
+  span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: block;
+    height: 1px;
+    width: 40%;
+
+    background-color: $white-main;
+  }
+
+  span:first-child {
+    left: 0px;
+  }
+  span:last-child {
+    right: 0;
+  }
+
+  p {
+    position: absolute;
+    font-size: 18px;
+    color: $white;
+
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}
