@@ -11,9 +11,11 @@ const AuthWindow = () => {
         <header className={styles.authRegister}>
           <Button iconSrc={"/google.png"}>Register via google</Button>
           <Or />
-          <Button style={{ fontWeight: "700", background: COLORS.yellow }}>
-            Create profile
-          </Button>
+          <Link href={"/register"}>
+            <Button style={{ fontWeight: "700", background: COLORS.yellow }}>
+              Create profile
+            </Button>
+          </Link>
         </header>
         <footer className={styles.authLogin}>
           <p>Do you have a profile ?</p>
