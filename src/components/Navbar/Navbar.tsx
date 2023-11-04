@@ -6,6 +6,7 @@ import { COLORS } from "@/constants/colors";
 import Btn from "../Btn/Btn";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Navbar = () => {
   const session = useSession();
@@ -23,7 +24,10 @@ const Navbar = () => {
           </p>
 
           <div className={styles.btns}>
-            <Btn style={{ backgroundColor: COLORS.yellow }}>Crated Post</Btn>
+            <Link href={"/create"}>
+              <Btn style={{ backgroundColor: COLORS.yellow }}>Crated Post</Btn>
+            </Link>
+
             <Btn
               onClick={() => signOut()}
               style={{ backgroundColor: COLORS.red, color: COLORS.white }}

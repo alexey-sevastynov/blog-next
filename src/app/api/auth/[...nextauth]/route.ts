@@ -19,6 +19,8 @@ const handler = NextAuth({
       async authorize(
         credentials: {
           email: string;
+          sex: string;
+
           password: string;
         },
         request
