@@ -15,11 +15,12 @@ const PostUser: React.FC<IPostUserProps> = ({
   userName,
   date,
   sex,
+  userPhoto,
 }) => {
   const session = useSession();
 
   const userAvatar: any =
-    sex === "female" ? "/woman.png" : "/man.png" && session.data?.user?.image;
+    sex === "female" ? "/woman.png" : "/man.png" && userPhoto;
 
   return (
     <div className={styles.post}>

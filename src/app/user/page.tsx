@@ -1,20 +1,41 @@
-"use client";
+// "use client";
 
-import PostUser from "@/components/PostUser/Post";
+import PostUser from "@/components/PostUser/PostUser";
+import { getDateToString } from "@/utils/getDateToString";
 
 import React from "react";
 
-const User = () => {
+async function getData() {
+  const res = await fetch(
+    "https://my-app-next-alexey10031994.vercel.app/api/posts",
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("failed to fetch data!");
+  }
+
+  return res.json();
+}
+
+const User = async () => {
+  const data = await getData();
+
   return (
     <>
-      <PostUser
-        userName="Alexey Alexey"
-        sex="male"
-        // title="dsjfldsfklsdfkj"
-        subtitle="In non-fiction publishing, there’s a trend of evocative or abstract titles, followed by a subtitle that communicates the content (and is packed with delicious keywords that the Amazon search engine can’t resist). This is also another way to get around long titles — and to add a little panache to an otherwise dry subject matter. In the United States, it’s also quite common to have “A Novel” as a subtitle (if, you know, it’s a "
-        date="03.11.2023 11:00"
-        image="https://images.pexels.com/photos/1497232/pexels-photo-1497232.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-      />
+      {data.map((item: IPost) => (
+        <PostUser
+          key={item._id}
+          userName={item.userName}
+          subtitle={item.content}
+          date={getDateToString(item.createdAt)}
+          image={item.image}
+          sex={item.sex}
+          userPhoto={item.userPhoto}
+        />
+      ))}
     </>
   );
 };

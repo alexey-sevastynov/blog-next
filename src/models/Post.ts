@@ -10,7 +10,6 @@ const postSchema = new Schema(
     },
     desc: {
       type: String,
-      require: true,
     },
     content: {
       type: String,
@@ -23,6 +22,9 @@ const postSchema = new Schema(
     userName: {
       type: String,
       require: true,
+    },
+    userPhoto: {
+      type: String,
     },
   },
   { timestamps: true }

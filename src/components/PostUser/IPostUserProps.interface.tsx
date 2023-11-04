@@ -5,4 +5,5 @@ export interface IPostUserProps {
   subtitle: string;
   image?: string;
   sex: "male" | "female";
+  userPhoto?: string;
 }

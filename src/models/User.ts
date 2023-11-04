@@ -18,6 +18,12 @@ const userSchema = new Schema(
       type: String,
       require: true,
     },
+    sex: {
+      type: String,
+    },
+    photo: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
