@@ -1,7 +1,6 @@
 @import "../../app/colors";
+@import "../../app/brake-point";
 .nav {
-  width: 100vw;
-
   background-color: $violet;
 
   nav {
@@ -17,6 +16,14 @@
     .btns {
       display: flex;
       gap: 20px;
+    }
+  }
+
+  @media (max-width: $mobile-breakpoint) {
+    nav {
+      .btns button:first-child {
+        display: none;
+      }
     }
   }
 }

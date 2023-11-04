@@ -8,7 +8,7 @@ export default function UserLayout({
   return (
     <>
       <Navbar />
-      {children}
+      <div className="container">{children}</div>
     </>
   );
 }
