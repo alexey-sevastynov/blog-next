@@ -6,4 +6,5 @@ export interface IPostUserProps {
   image?: string;
   sex: "male" | "female";
   userPhoto?: string;
+  email: string;
 }

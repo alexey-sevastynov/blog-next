@@ -7,7 +7,8 @@ import React from "react";
 
 async function getData() {
   const res = await fetch(
-    "https://my-app-next-alexey10031994.vercel.app/api/posts",
+    "http://localhost:3000/api/posts",
+    // "https://my-app-next-alexey10031994.vercel.app/api/posts",
     {
       cache: "no-store",
     }
@@ -22,6 +23,7 @@ async function getData() {
 
 const User = async () => {
   const data = await getData();
+  console.log(data);
 
   return (
     <>
@@ -29,7 +31,9 @@ const User = async () => {
         <PostUser
           key={item._id}
           userName={item.userName}
-          subtitle={item.content}
+          email={item.email}
+          subtitle={item.desc}
+          title={item.title}
           date={getDateToString(item.createdAt)}
           image={item.image}
           sex={item.sex}

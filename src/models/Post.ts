@@ -11,10 +11,7 @@ const postSchema = new Schema(
     desc: {
       type: String,
     },
-    content: {
-      type: String,
-      require: true,
-    },
+
     image: {
       type: String,
       require: true,
@@ -23,7 +20,16 @@ const postSchema = new Schema(
       type: String,
       require: true,
     },
+
+    email: {
+      type: String,
+      require: true,
+    },
     userPhoto: {
+      type: String,
+    },
+
+    sex: {
       type: String,
     },
   },

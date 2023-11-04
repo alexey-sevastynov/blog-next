@@ -20,3 +20,26 @@ export const GET = async (request: NextRequest) => {
     return new NextResponse(`Error in responce of DB, ${error}`);
   }
 };
+
+export const POST = async (request: NextRequest) => {
+  const { title, desc, image, sex, userPhoto, userName, email } =
+    await request.json();
+  await connect();
+  const newPost = new Post({
+    title,
+    desc,
+    image,
+    sex,
+    userPhoto,
+    userName,
+    email,
+  });
+
+  try {
+    await newPost.save();
+
+    return new NextResponse("Post has been created", { status: 201 });
+  } catch (err) {
+    return new NextResponse(`Database Error , ${err}`, { status: 500 });
+  }
+};

@@ -16,36 +16,52 @@ const PostUser: React.FC<IPostUserProps> = ({
   date,
   sex,
   userPhoto,
+  email,
 }) => {
   const session = useSession();
 
-  const userAvatar: any =
-    sex === "female" ? "/woman.png" : "/man.png" && userPhoto;
+  const userAvatar = (sex: "male" | "female") => {
+    switch (sex) {
+      case "female":
+        return "/woman.png";
 
+      case "male":
+        return "/man.png";
+
+      default:
+        return (
+          userPhoto ||
+          "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+        );
+    }
+  };
   return (
     <div className={styles.post}>
-      <div className={styles.btnsMobile}>
-        <Btn
-          style={{
-            backgroundColor: COLORS.violet,
-            color: COLORS.white,
-            borderRadius: "10px 0px 0px 0px",
-          }}
-        >
-          edit
-        </Btn>
-        <Btn
-          style={{
-            backgroundColor: COLORS.red,
-            color: COLORS.white,
-            borderRadius: "0px 10px 0px 0px",
-          }}
-        >
-          delete
-        </Btn>
-      </div>
+      {session.data?.user?.email === email && (
+        <div className={styles.btns}>
+          <Btn
+            style={{
+              backgroundColor: COLORS.violet,
+              color: COLORS.white,
+              borderRadius: "10px 0px 0px 0px",
+            }}
+          >
+            edit
+          </Btn>
+          <Btn
+            id="btn"
+            style={{
+              backgroundColor: COLORS.red,
+              color: COLORS.white,
+              borderRadius: "0px 10px 0px 0px",
+            }}
+          >
+            delete
+          </Btn>
+        </div>
+      )}
       <div className={styles.userBlock}>
-        <Image src={userAvatar} alt="woman" width={80} height={80} />
+        <Image src={userAvatar(sex)} alt="woman" width={80} height={80} />
         <p className={styles.userName}>{userName}</p>
         <p className={styles.date}>{date}</p>
       </div>

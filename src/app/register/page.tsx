@@ -46,7 +46,7 @@ const RegisterWindow = () => {
         headers: {
           "Content-Type": "aplication/json",
         },
-        body: JSON.stringify({ name, email, password, sex: sex }), // почему sex не приходит в BD
+        body: JSON.stringify({ name, email, password, sex: sex }),
       });
       res.status === 201 && router.push("/");
     } catch (error: any) {

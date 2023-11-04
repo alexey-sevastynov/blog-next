@@ -12,8 +12,11 @@
 
   padding: 20px 0px 0px 20px;
 
-  .btnsMobile {
-    display: none;
+  .btns {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   .btnMobileCreatePost {
@@ -123,7 +126,7 @@
       }
     }
 
-    .btnsMobile {
+    .btns {
       display: flex;
       width: 100%;
       justify-content: space-between;

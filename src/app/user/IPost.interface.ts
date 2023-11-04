@@ -1,9 +1,9 @@
 interface IPost {
   _id: string;
   title: string;
-  content: string;
   image: string;
   userName: string;
+  email: string;
   desc: string;
   createdAt: Date;
   updatedAt: Date;

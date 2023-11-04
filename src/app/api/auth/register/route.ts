@@ -6,8 +6,6 @@ import bcrypt from "bcryptjs";
 export const POST = async (request: NextRequest) => {
   const { name, email, password, sex } = await request.json();
 
-  console.log(name, email, password, sex);
-
   await connect();
 
   const hashedPassword = await bcrypt.hash(password, 5);
