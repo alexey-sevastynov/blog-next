@@ -11,17 +11,17 @@ import { useRouter } from "next/navigation";
 
 const AuthWindow = () => {
   const session = useSession();
-  // const router = useRouter();
+  const router = useRouter();
 
   console.log(session);
 
-  if (session.status == "loading") {
+  if (session.status === "loading") {
     return <p>Loading</p>;
   }
 
-  // if (session.status == "authenticated") {
-  //   router?.push("/");
-  // }
+  if (session.status === "authenticated") {
+    router?.push("/user");
+  }
 
   return (
     <section className={styles.auth}>

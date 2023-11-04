@@ -1,0 +1,25 @@
+@import "./colors";
+
+.home {
+  .nav {
+    width: 100vw;
+
+    background-color: $violet;
+
+    nav {
+      height: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        color: $white;
+      }
+
+      .btns {
+        display: flex;
+        gap: 20px;
+      }
+    }
+  }
+}
