@@ -1,6 +1,6 @@
 export const userAvatar = (
   sex: "male" | "female",
-  userPhoto: string = "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+  userPhoto: string | undefined
 ) => {
   switch (sex) {
     case "female":
@@ -9,7 +9,10 @@ export const userAvatar = (
     case "male":
       return "/man.png";
 
-    default:
-      return userPhoto;
+    case undefined:
+      return (
+        userPhoto ||
+        "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+      );
   }
 };
