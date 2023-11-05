@@ -1,38 +1,36 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { useState, useEffect, FormEvent } from "react";
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input";
 import Btn from "@/components/Btn/Btn";
 import { COLORS } from "@/constants/colors";
 import Textarea from "@/components/Textarea/Textarea";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { useRouter } from "next/navigation";
 
-const CreatePost = () => {
-  const [users, setUsers] = useState<any>([]);
-  const session = useSession();
+const CreatePost = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   const fetcher = (...args: Parameters<typeof fetch>) =>
-    fetch(...args)
-      .then((res) => res.json())
-      .then((data) => setUsers([...data]));
-  const { data, mutate, error, isLoading } = useSWR(`/api/users`, fetcher);
+    fetch(...args).then((res) => res.json());
+  const { data, error, isLoading } = useSWR(`/api/posts/${params.id}`, fetcher);
 
-  const currentUser = users.find(
-    (user: any) => user.email === session.data?.user?.email
-  );
-  const currentSexPerson = currentUser && currentUser.sex;
+  console.log(data);
 
-  if (session.status == "loading") {
-    return <p>Loading</p>;
-  }
-  if (session.status == "unauthenticated") {
-    router?.push("/");
-  }
+  const [formData, setFormData] = useState({
+    title: "",
+    desc: "",
+    image: "",
+  });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -47,19 +45,14 @@ const CreatePost = () => {
         const desc = descInput.value;
         const image = imageInput.value;
 
-        await fetch("/api/posts", {
-          method: "POST",
+        await fetch(`/api/posts/${params.id}`, {
+          method: "PATCH",
           body: JSON.stringify({
             title,
             desc,
             image,
-            sex: currentSexPerson,
-            userPhoto: session.data?.user?.image,
-            userName: session.data?.user?.name,
-            email: session.data?.user?.email,
           }),
         }).finally(() => {
-          mutate();
           form.reset();
           router?.push("/user");
         });
@@ -67,24 +60,56 @@ const CreatePost = () => {
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if (data) {
+      setFormData({
+        title: data.title || "",
+        desc: data.desc || "",
+        image: data.image || "",
+      });
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className={styles.create}>
+    <div className={styles.edit}>
       <form className="container" onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Create Post</h2>
+        <h2 className={styles.title}>Edit Post</h2>
 
         <div className={styles.inputs}>
-          <Input placeholder="title..." type="text" name="title">
+          <Input
+            placeholder="title..."
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+          >
             input title
           </Input>
           <Textarea
             placeholder="description..."
             type="text"
             name="desc"
+            value={formData.desc}
+            onChange={handleInputChange}
             required
           >
             input description
           </Textarea>
-          <Input placeholder="URL image..." type="text" name="img">
+          <Input
+            placeholder="URL image..."
+            type="text"
+            name="img"
+            value={formData.image}
+            onChange={handleInputChange}
+          >
             input URL image
           </Input>
         </div>
@@ -100,7 +125,7 @@ const CreatePost = () => {
             type="submit"
             style={{ backgroundColor: COLORS.violet, color: COLORS.white }}
           >
-            create
+            edit
           </Btn>
         </div>
       </form>

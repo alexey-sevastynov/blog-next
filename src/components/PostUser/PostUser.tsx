@@ -7,8 +7,12 @@ import { IPostUserProps } from "./IPostUserProps.interface";
 import { useSession } from "next-auth/react";
 import Btn from "../Btn/Btn";
 import { COLORS } from "@/constants/colors";
+import Link from "next/link";
+import useSWR from "swr";
+import { userAvatar } from "@/utils/userAvatar";
 
 const PostUser: React.FC<IPostUserProps> = ({
+  _id,
   title,
   subtitle,
   image,
@@ -20,36 +24,42 @@ const PostUser: React.FC<IPostUserProps> = ({
 }) => {
   const session = useSession();
 
-  const userAvatar = (sex: "male" | "female") => {
-    switch (sex) {
-      case "female":
-        return "/woman.png";
+  const fetcher = (...args: Parameters<typeof fetch>) =>
+    fetch(...args).then((res) => res.json());
+  const { data, mutate, error, isLoading } = useSWR(`/api/posts`, fetcher);
 
-      case "male":
-        return "/man.png";
-
-      default:
-        return (
-          userPhoto ||
-          "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
-        );
+  const handleDelete = async (id: string) => {
+    if (confirm("are you want to delete post?")) {
+      try {
+        await fetch(`/api/posts/${id}`, {
+          method: "DELETE",
+        });
+        mutate();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
   return (
     <div className={styles.post}>
       {session.data?.user?.email === email && (
         <div className={styles.btns}>
-          <Btn
-            style={{
-              backgroundColor: COLORS.violet,
-              color: COLORS.white,
-              borderRadius: "10px 0px 0px 0px",
-            }}
-          >
-            edit
-          </Btn>
+          <Link href={`/edit/${_id}`}>
+            <Btn
+              style={{
+                backgroundColor: COLORS.violet,
+                color: COLORS.white,
+                borderRadius: "10px 0px 0px 0px",
+              }}
+            >
+              edit
+            </Btn>
+          </Link>
+
           <Btn
             id="btn"
+            onClick={() => handleDelete(_id)}
             style={{
               backgroundColor: COLORS.red,
               color: COLORS.white,
@@ -61,7 +71,12 @@ const PostUser: React.FC<IPostUserProps> = ({
         </div>
       )}
       <div className={styles.userBlock}>
-        <Image src={userAvatar(sex)} alt="woman" width={80} height={80} />
+        <Image
+          src={userAvatar(sex, userPhoto)}
+          alt="woman"
+          width={80}
+          height={80}
+        />
         <p className={styles.userName}>{userName}</p>
         <p className={styles.date}>{date}</p>
       </div>
@@ -78,13 +93,15 @@ const PostUser: React.FC<IPostUserProps> = ({
       )}
 
       <div className={styles.btnMobileCreatePost}>
-        <Btn
-          style={{
-            backgroundColor: COLORS.yellow,
-          }}
-        >
-          Create Post
-        </Btn>
+        <Link href={"/create"}>
+          <Btn
+            style={{
+              backgroundColor: COLORS.yellow,
+            }}
+          >
+            Create Post
+          </Btn>
+        </Link>
       </div>
     </div>
   );

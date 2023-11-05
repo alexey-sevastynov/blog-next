@@ -1,0 +1,26 @@
+@import "../../colors";
+
+.edit {
+  min-height: 100vh;
+  width: 100vw;
+
+  background: $red;
+  background: linear-gradient(0deg, $red 0%, $violet 100%);
+
+  .title {
+    padding: 20px 0px;
+    text-align: center;
+  }
+
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btns {
+    padding: 20px 0px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
