@@ -7,22 +7,6 @@ import styles from "./page.module.scss";
 import React from "react";
 import useSWR from "swr";
 
-// async function getData() {
-//   const res = await fetch(
-//     "http://localhost:3000/api/posts",
-//     // "https://my-app-next-alexey10031994.vercel.app/api/posts",
-//     {
-//       cache: "no-store",
-//     }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("failed to fetch data!");
-//   }
-
-//   return res.json();
-// }
-
 const User = () => {
   const fetcher = (...args: Parameters<typeof fetch>) =>
     fetch(...args).then((res) => res.json());
