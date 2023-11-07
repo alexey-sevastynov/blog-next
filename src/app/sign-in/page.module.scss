@@ -7,12 +7,9 @@
   width: 100vw;
 
   .signInWindow {
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translateX(-50%) translateY(-50%);
+    padding: 20px 5px;
+    max-width: 350px;
+    margin: 0px auto;
 
     .title {
       margin-bottom: 120px;

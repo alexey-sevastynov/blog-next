@@ -1,0 +1,11 @@
+@import "../../app/colors";
+
+.errorMessage {
+  width: 100%;
+  border: 1px solid $error;
+  margin: 10px 0px;
+  padding: 10px 5px;
+  color: $error;
+  text-align: center;
+  font-weight: bold;
+}

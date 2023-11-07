@@ -1,19 +1,26 @@
 "use client";
 
-import React, { FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input";
 import Btn from "@/components/Btn/Btn";
 import { COLORS } from "@/constants/colors";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import ErrorMessage from "@/components/error-message/ErrorMessage";
 
 const SignInWindow = () => {
   const session = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  console.log(session);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
 
   if (session.status == "loading") {
     return <p>Loading</p>;
@@ -22,7 +29,9 @@ const SignInWindow = () => {
     router?.push("/user");
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const callbackUrl = searchParams.get("callbackUrl") || "/sign-in";
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const emailInput = form.elements.namedItem("email") as HTMLInputElement;
@@ -33,9 +42,33 @@ const SignInWindow = () => {
     if (emailInput && passwordInput) {
       const email = emailInput.value;
       const password = passwordInput.value;
+      try {
+        setLoading(true);
+        setFormValues({ email: "", password: "" });
+        const res = await signIn("credentials", {
+          redirect: false,
+          email: formValues.email,
+          password: formValues.password,
+          callbackUrl,
+        });
+        signIn;
+        setLoading(false);
 
-      signIn("credentials", { email, password });
+        if (!res?.error) {
+          router.push(callbackUrl);
+        } else {
+          setError("Invalid email or password. Try again. ");
+        }
+      } catch (error: any) {
+        setLoading(false);
+        setError(error);
+      }
     }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
   };
 
   return (
@@ -43,11 +76,20 @@ const SignInWindow = () => {
       <form className={styles.signInWindow} onSubmit={handleSubmit}>
         <h2 className={styles.title}>SIGN IN</h2>
         <div className={styles.inputs}>
-          <Input placeholder="email" type="email" name="email" required>
+          <Input
+            placeholder="email"
+            value={formValues.email}
+            onChange={handleChange}
+            type="email"
+            name="email"
+            required
+          >
             input your email:
           </Input>
           <Input
             placeholder="password"
+            value={formValues.password}
+            onChange={handleChange}
             type="password"
             name="password"
             required
@@ -55,6 +97,8 @@ const SignInWindow = () => {
             input your password:
           </Input>
         </div>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <footer className={styles.btns}>
           <Link href={"/"}>
@@ -67,7 +111,7 @@ const SignInWindow = () => {
             style={{ backgroundColor: COLORS.red, color: COLORS.white }}
             type="submit"
           >
-            sign in
+            {loading ? "loading..." : "sign in"}
           </Btn>
         </footer>
       </form>

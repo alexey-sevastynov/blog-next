@@ -8,6 +8,7 @@ import { COLORS } from "@/constants/colors";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import ErrorMessage from "@/components/error-message/ErrorMessage";
 
 const RegisterWindow = () => {
   const session = useSession();
@@ -48,10 +49,15 @@ const RegisterWindow = () => {
         },
         body: JSON.stringify({ name, email, password, sex: sex }),
       });
+
+      if (!res.ok) {
+        setError((await res.json()).message);
+        return;
+      }
       res.status === 201 && router.push("/");
     } catch (error: any) {
       setError(error);
-      console.log(error);
+      console.log("error");
     }
   };
 
@@ -101,7 +107,7 @@ const RegisterWindow = () => {
           </div>
         </div>
 
-        {sex}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <footer className={styles.btns}>
           <Link href={"/"}>
@@ -116,7 +122,6 @@ const RegisterWindow = () => {
           >
             create
           </Btn>
-          {error && <p>Something about wrong</p>}
         </footer>
       </form>
     </section>
