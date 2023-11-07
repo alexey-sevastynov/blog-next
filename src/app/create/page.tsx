@@ -42,7 +42,7 @@ const CreatePost = () => {
     const imageInput = form.elements.namedItem("img") as HTMLInputElement;
 
     try {
-      if (titleInput && descInput && imageInput) {
+      if (titleInput && descInput && imageInput && currentSexPerson) {
         const title = titleInput.value;
         const desc = descInput.value;
         const image = imageInput.value;

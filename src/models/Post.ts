@@ -31,6 +31,7 @@ const postSchema = new Schema(
 
     sex: {
       type: String,
+      require: true,
     },
   },
   { timestamps: true }
