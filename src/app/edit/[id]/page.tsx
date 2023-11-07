@@ -37,7 +37,7 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
     const form = e.target as HTMLFormElement;
     const titleInput = form.elements.namedItem("title") as HTMLInputElement;
     const descInput = form.elements.namedItem("desc") as HTMLInputElement;
-    const imageInput = form.elements.namedItem("img") as HTMLInputElement;
+    const imageInput = form.elements.namedItem("image") as HTMLInputElement;
 
     try {
       if (titleInput && descInput && imageInput) {
@@ -105,8 +105,8 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
           </Textarea>
           <Input
             placeholder="URL image..."
-            type="text"
-            name="img"
+            type="url"
+            name="image"
             value={formData.image}
             onChange={handleInputChange}
           >
