@@ -25,7 +25,7 @@ const Navbar = () => {
 
           <div className={styles.btns}>
             <Link href={"/create"}>
-              <Btn style={{ backgroundColor: COLORS.yellow }}>Crated Post</Btn>
+              <Btn style={{ backgroundColor: COLORS.yellow }}>Crate Post</Btn>
             </Link>
 
             <Btn

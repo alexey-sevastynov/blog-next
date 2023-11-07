@@ -74,7 +74,7 @@ const CreatePost = () => {
 
         <div className={styles.inputs}>
           <Input placeholder="title..." type="text" name="title">
-            input title
+            input title (not required field)
           </Input>
           <Textarea
             placeholder="description..."
@@ -82,10 +82,10 @@ const CreatePost = () => {
             name="desc"
             required
           >
-            input description
+            input description or message* (required field!)
           </Textarea>
           <Input placeholder="URL image..." type="text" name="img">
-            input URL image
+            input URL image (not required field)
           </Input>
         </div>
 
