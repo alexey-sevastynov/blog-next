@@ -73,7 +73,7 @@ const PostUser: React.FC<IPostUserProps> = ({
       <div className={styles.userBlock}>
         <Image
           src={userAvatar(sex, userPhoto)}
-          alt="woman"
+          alt="avatar"
           width={80}
           height={80}
         />

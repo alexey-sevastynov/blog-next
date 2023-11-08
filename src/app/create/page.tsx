@@ -121,7 +121,7 @@ const CreatePost = () => {
               allowedContent({ ready, fileTypes, isUploading }) {
                 if (!ready) return "Checking what you allow";
                 if (isUploading) return "Seems like stuff is uploading";
-                return `max size file 4MB`;
+                return `max size file 8MB`;
               },
             }}
             onClientUploadComplete={(res) => {
