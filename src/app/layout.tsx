@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.scss";
 import AuthProvider from "@/components/auth-provider/AuthProvider";
+import "@uploadthing/react/styles.css";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -18,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

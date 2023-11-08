@@ -41,8 +41,6 @@ const PostUser: React.FC<IPostUserProps> = ({
     }
   };
 
-  console.log(sex);
-
   return (
     <div className={styles.post}>
       {session.data?.user?.email === email && (

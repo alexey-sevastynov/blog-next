@@ -17,8 +17,6 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
     fetch(...args).then((res) => res.json());
   const { data, error, isLoading } = useSWR(`/api/posts/${params.id}`, fetcher);
 
-  console.log(data);
-
   const [formData, setFormData] = useState({
     title: "",
     desc: "",

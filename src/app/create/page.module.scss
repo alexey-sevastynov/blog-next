@@ -16,6 +16,15 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    .success {
+      text-align: center;
+      color: $white;
+
+      a {
+        text-decoration: underline;
+      }
+    }
   }
 
   .btns {

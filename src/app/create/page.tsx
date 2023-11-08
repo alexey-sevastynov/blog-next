@@ -10,11 +10,26 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import useSWR, { mutate } from "swr";
 import { useRouter } from "next/navigation";
+import { UploadButton } from "@/utils/uploadthing";
+import { UploadFileResponse } from "uploadthing/client";
 
 const CreatePost = () => {
-  const [users, setUsers] = useState<any>([]);
   const session = useSession();
   const router = useRouter();
+
+  const [users, setUsers] = useState<any>([]);
+  const [image, setImage] = useState<UploadFileResponse[]>([]);
+
+  const uploadImageMessage = image.length ? (
+    <p className={styles.success}>
+      Upload Complete!
+      <br />
+      our url:{" "}
+      <Link href={image[0]?.fileUrl} target="_blank">
+        {image[0]?.fileUrl}
+      </Link>
+    </p>
+  ) : null;
 
   const fetcher = (...args: Parameters<typeof fetch>) =>
     fetch(...args)
@@ -39,20 +54,18 @@ const CreatePost = () => {
     const form = e.target as HTMLFormElement;
     const titleInput = form.elements.namedItem("title") as HTMLInputElement;
     const descInput = form.elements.namedItem("desc") as HTMLInputElement;
-    const imageInput = form.elements.namedItem("img") as HTMLInputElement;
 
     try {
-      if (titleInput && descInput && imageInput && currentSexPerson) {
+      if (titleInput && descInput && image[0].fileUrl) {
         const title = titleInput.value;
         const desc = descInput.value;
-        const image = imageInput.value;
 
         await fetch("/api/posts", {
           method: "POST",
           body: JSON.stringify({
             title,
             desc,
-            image,
+            image: image[0].fileUrl,
             sex: currentSexPerson,
             userPhoto: session.data?.user?.image,
             userName: session.data?.user?.name,
@@ -84,9 +97,46 @@ const CreatePost = () => {
           >
             input description or message* (required field!)
           </Textarea>
-          <Input placeholder="URL image..." type="text" name="img">
-            input URL image (not required field)
-          </Input>
+
+          <UploadButton
+            endpoint="imageUploader"
+            appearance={{
+              button({ ready, isUploading }) {
+                return {
+                  color: COLORS.white,
+                  ...(ready && { backgroundColor: COLORS.violet }),
+                  ...(isUploading && { backgroundColor: COLORS.yellow }),
+                };
+              },
+              allowedContent: {
+                color: COLORS.white,
+              },
+            }}
+            content={{
+              button({ ready }) {
+                if (ready) return <div>Upload image</div>;
+
+                return "Getting ready...";
+              },
+              allowedContent({ ready, fileTypes, isUploading }) {
+                if (!ready) return "Checking what you allow";
+                if (isUploading) return "Seems like stuff is uploading";
+                return `max size file 4MB`;
+              },
+            }}
+            onClientUploadComplete={(res) => {
+              if (res) {
+                setImage(res);
+                const json = JSON.stringify(res);
+
+                console.log(json);
+              }
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+          {uploadImageMessage}
         </div>
 
         <div className={styles.btns}>
