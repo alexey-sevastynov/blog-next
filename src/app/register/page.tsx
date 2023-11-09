@@ -18,9 +18,6 @@ const RegisterWindow = () => {
   const [error, setError] = useState(null);
   const [sex, setSex] = useState("male");
 
-  if (session.status == "loading") {
-    return <p>Loading</p>;
-  }
   if (session.status === "authenticated") {
     router?.push("/user");
   }

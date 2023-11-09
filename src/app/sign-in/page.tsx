@@ -3,7 +3,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input";
-import Btn from "@/components/Btn/Btn";
 import { COLORS } from "@/constants/colors";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
@@ -23,9 +22,6 @@ const SignInWindow = () => {
     password: "",
   });
 
-  if (session.status == "loading") {
-    return <p>Loading</p>;
-  }
   if (session.status == "authenticated") {
     router?.push("/user");
   }

@@ -31,7 +31,7 @@ const Navbar = () => {
                 iconSrc="/plus.svg"
                 btnSmall
               >
-                Crate Post
+                Create Post
               </Button>
             </Link>
 

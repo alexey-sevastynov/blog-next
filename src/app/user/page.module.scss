@@ -4,3 +4,11 @@
   flex-direction: column-reverse;
   gap: 20px;
 }
+
+.center {
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  justify-content: center;
+}
