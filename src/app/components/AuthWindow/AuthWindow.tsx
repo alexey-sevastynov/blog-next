@@ -36,7 +36,10 @@ const AuthWindow = () => {
           </Button>
           <Or />
           <Link href={"/register"}>
-            <Button style={{ fontWeight: "700", background: COLORS.yellow }}>
+            <Button
+              style={{ fontWeight: "700", background: COLORS.yellow }}
+              iconSrc={"/sign-up.svg"}
+            >
               Create profile
             </Button>
           </Link>
@@ -50,6 +53,7 @@ const AuthWindow = () => {
                 background: "none",
                 color: COLORS.yellow,
               }}
+              iconSrc={"/sign-in.svg"}
             >
               SIGN IN
             </Button>

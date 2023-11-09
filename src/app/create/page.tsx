@@ -3,7 +3,7 @@
 import React, { FormEvent, useState } from "react";
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input";
-import Btn from "@/components/Btn/Btn";
+
 import { COLORS } from "@/constants/colors";
 import Textarea from "@/components/Textarea/Textarea";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import useSWR, { mutate } from "swr";
 import { useRouter } from "next/navigation";
 import { UploadButton } from "@/utils/uploadthing";
 import { UploadFileResponse } from "uploadthing/client";
+import Button from "@/components/Button/Button";
 
 const CreatePost = () => {
   const session = useSession();
@@ -141,17 +142,22 @@ const CreatePost = () => {
 
         <div className={styles.btns}>
           <Link href={"/user"}>
-            <Btn type="button" style={{ backgroundColor: COLORS.yellow }}>
+            <Button
+              type="button"
+              style={{ backgroundColor: COLORS.yellow }}
+              btnSmall
+            >
               back
-            </Btn>
+            </Button>
           </Link>
 
-          <Btn
+          <Button
             type="submit"
             style={{ backgroundColor: COLORS.violet, color: COLORS.white }}
+            btnSmall
           >
             create
-          </Btn>
+          </Button>
         </div>
       </form>
     </div>

@@ -3,12 +3,13 @@
 import React, { ChangeEvent, useState } from "react";
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input";
-import Btn from "@/components/Btn/Btn";
+
 import { COLORS } from "@/constants/colors";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ErrorMessage from "@/components/error-message/ErrorMessage";
+import Button from "@/components/Button/Button";
 
 const RegisterWindow = () => {
   const session = useSession();
@@ -111,17 +112,22 @@ const RegisterWindow = () => {
 
         <footer className={styles.btns}>
           <Link href={"/"}>
-            <Btn style={{ backgroundColor: COLORS.yellow }} type="button">
+            <Button
+              style={{ backgroundColor: COLORS.yellow }}
+              type="button"
+              btnSmall
+            >
               back
-            </Btn>
+            </Button>
           </Link>
 
-          <Btn
+          <Button
             type="submit"
             style={{ backgroundColor: COLORS.violet, color: COLORS.white }}
+            btnSmall
           >
             create
-          </Btn>
+          </Button>
         </footer>
       </form>
     </section>

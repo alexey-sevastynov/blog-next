@@ -9,6 +9,7 @@ import Textarea from "@/components/Textarea/Textarea";
 import Link from "next/link";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
+import Button from "@/components/Button/Button";
 
 const CreatePost = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -114,17 +115,22 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
 
         <div className={styles.btns}>
           <Link href={"/user"}>
-            <Btn type="button" style={{ backgroundColor: COLORS.yellow }}>
+            <Button
+              type="button"
+              style={{ backgroundColor: COLORS.yellow }}
+              btnSmall
+            >
               back
-            </Btn>
+            </Button>
           </Link>
 
-          <Btn
+          <Button
             type="submit"
             style={{ backgroundColor: COLORS.violet, color: COLORS.white }}
+            btnSmall
           >
             edit
-          </Btn>
+          </Button>
         </div>
       </form>
     </div>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ErrorMessage from "@/components/error-message/ErrorMessage";
+import Button from "@/components/Button/Button";
 
 const SignInWindow = () => {
   const session = useSession();
@@ -102,17 +103,22 @@ const SignInWindow = () => {
 
         <footer className={styles.btns}>
           <Link href={"/"}>
-            <Btn style={{ backgroundColor: COLORS.yellow }} type="button">
+            <Button
+              style={{ backgroundColor: COLORS.yellow }}
+              type="button"
+              btnSmall
+            >
               back
-            </Btn>
+            </Button>
           </Link>
 
-          <Btn
+          <Button
             style={{ backgroundColor: COLORS.red, color: COLORS.white }}
+            btnSmall
             type="submit"
           >
             {loading ? "loading..." : "sign in"}
-          </Btn>
+          </Button>
         </footer>
       </form>
     </section>

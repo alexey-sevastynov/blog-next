@@ -5,11 +5,12 @@ import styles from "./post-user.module.scss";
 import Image from "next/image";
 import { IPostUserProps } from "./IPostUserProps.interface";
 import { useSession } from "next-auth/react";
-import Btn from "../Btn/Btn";
+
 import { COLORS } from "@/constants/colors";
 import Link from "next/link";
 import useSWR from "swr";
 import { userAvatar } from "@/utils/userAvatar";
+import Button from "../Button/Button";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -46,18 +47,20 @@ const PostUser: React.FC<IPostUserProps> = ({
       {session.data?.user?.email === email && (
         <div className={styles.btns}>
           <Link href={`/edit/${_id}`}>
-            <Btn
+            <Button
               style={{
                 backgroundColor: COLORS.violet,
                 color: COLORS.white,
                 borderRadius: "10px 0px 0px 0px",
               }}
+              iconSrc="/edit.svg"
+              btnSmall
             >
               edit
-            </Btn>
+            </Button>
           </Link>
 
-          <Btn
+          <Button
             id="btn"
             onClick={() => handleDelete(_id)}
             style={{
@@ -65,9 +68,11 @@ const PostUser: React.FC<IPostUserProps> = ({
               color: COLORS.white,
               borderRadius: "0px 10px 0px 0px",
             }}
+            iconSrc="/delete.svg"
+            btnSmall
           >
             delete
-          </Btn>
+          </Button>
         </div>
       )}
       <div className={styles.userBlock}>
@@ -94,13 +99,15 @@ const PostUser: React.FC<IPostUserProps> = ({
 
       <div className={styles.btnMobileCreatePost}>
         <Link href={"/create"}>
-          <Btn
+          <Button
             style={{
               backgroundColor: COLORS.yellow,
             }}
+            iconSrc="/plus.svg"
+            btnSmall
           >
             Create Post
-          </Btn>
+          </Button>
         </Link>
       </div>
     </div>

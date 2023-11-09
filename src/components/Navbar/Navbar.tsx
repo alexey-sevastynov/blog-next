@@ -3,10 +3,11 @@
 import React from "react";
 import styles from "./navbar.module.scss";
 import { COLORS } from "@/constants/colors";
-import Btn from "../Btn/Btn";
+
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Button from "../Button/Button";
 
 const Navbar = () => {
   const session = useSession();
@@ -25,15 +26,23 @@ const Navbar = () => {
 
           <div className={styles.btns}>
             <Link href={"/create"}>
-              <Btn style={{ backgroundColor: COLORS.yellow }}>Crate Post</Btn>
+              <Button
+                style={{ backgroundColor: COLORS.yellow }}
+                iconSrc="/plus.svg"
+                btnSmall
+              >
+                Crate Post
+              </Button>
             </Link>
 
-            <Btn
+            <Button
               onClick={() => signOut()}
               style={{ backgroundColor: COLORS.red, color: COLORS.white }}
+              iconSrc="/sign-out.svg"
+              btnSmall
             >
               Sign Out
-            </Btn>
+            </Button>
           </div>
         </nav>
       </div>

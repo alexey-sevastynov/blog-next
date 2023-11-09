@@ -1,3 +1,31 @@
+.btnSmall,
+.btnSmallWithIcon {
+  position: relative;
+  min-width: 100px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 700;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.btnSmall {
+  padding: 0px 10px;
+}
+
+.btnSmallWithIcon {
+  padding: 0px 10px 0px 36px;
+  .iconSmall {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+  }
+}
+
 .button {
   position: relative;
   font-size: 18px;
@@ -11,11 +39,11 @@
   border: none;
 
   cursor: pointer;
-}
 
-.icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 20px;
+  .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 20px;
+  }
 }
