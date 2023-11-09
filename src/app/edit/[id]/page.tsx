@@ -3,7 +3,7 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import styles from "./page.module.scss";
 import Input from "@/components/Input/Input";
-import Btn from "@/components/Btn/Btn";
+
 import { COLORS } from "@/constants/colors";
 import Textarea from "@/components/Textarea/Textarea";
 import Link from "next/link";
