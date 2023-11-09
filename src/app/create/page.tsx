@@ -88,7 +88,8 @@ const CreatePost = () => {
 
         <div className={styles.inputs}>
           <Input placeholder="title..." type="text" name="title">
-            input title (not required field)
+            Input Title{" "}
+            <span style={{ fontSize: "12px" }}>(not required field)</span>
           </Input>
           <Textarea
             placeholder="description..."
@@ -96,7 +97,8 @@ const CreatePost = () => {
             name="desc"
             required
           >
-            input description or message* (required field!)
+            Input Description or Message*{" "}
+            <span style={{ fontSize: "12px" }}>(required field!)</span>
           </Textarea>
 
           <UploadButton
@@ -106,7 +108,7 @@ const CreatePost = () => {
                 return {
                   color: COLORS.white,
                   ...(ready && { backgroundColor: COLORS.violet }),
-                  ...(isUploading && { backgroundColor: COLORS.yellow }),
+                  ...(isUploading && { backgroundColor: COLORS.red }),
                 };
               },
               allowedContent: {
@@ -115,7 +117,7 @@ const CreatePost = () => {
             }}
             content={{
               button({ ready }) {
-                if (ready) return <div>Upload image</div>;
+                if (ready) return <div>Upload Image</div>;
 
                 return "Getting ready...";
               },
@@ -147,7 +149,7 @@ const CreatePost = () => {
               style={{ backgroundColor: COLORS.yellow }}
               btnSmall
             >
-              back
+              Back
             </Button>
           </Link>
 
@@ -156,7 +158,7 @@ const CreatePost = () => {
             style={{ backgroundColor: COLORS.violet, color: COLORS.white }}
             btnSmall
           >
-            create
+            Create
           </Button>
         </div>
       </form>

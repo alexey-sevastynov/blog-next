@@ -6,6 +6,7 @@ import "@uploadthing/react/styles.css";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
+import { GlobalContextProvider } from "./Context/store";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <GlobalContextProvider>{children}</GlobalContextProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -4,14 +4,17 @@ import React from "react";
 import styles from "./navbar.module.scss";
 import { COLORS } from "@/constants/colors";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "../Button/Button";
+import { useGlobalContext } from "@/app/Context/store";
 
 const Navbar = () => {
   const session = useSession();
   const router = useRouter();
+
+  const { setIsLogoutConfirmationDialogOpen } = useGlobalContext();
 
   if (session.status === "unauthenticated") {
     router?.push("/");
@@ -36,7 +39,7 @@ const Navbar = () => {
             </Link>
 
             <Button
-              onClick={() => signOut()}
+              onClick={() => setIsLogoutConfirmationDialogOpen(true)}
               style={{ backgroundColor: COLORS.red, color: COLORS.white }}
               iconSrc="/sign-out.svg"
               btnSmall
