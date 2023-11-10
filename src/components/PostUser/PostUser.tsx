@@ -11,6 +11,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import { userAvatar } from "@/utils/userAvatar";
 import Button from "../Button/Button";
+import { useGlobalContext } from "@/app/Context/store";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -25,21 +26,16 @@ const PostUser: React.FC<IPostUserProps> = ({
 }) => {
   const session = useSession();
 
+  const { setIsDeletePostConfirmationDialogOpen, setIdPostDelete } =
+    useGlobalContext();
+
   const fetcher = (...args: Parameters<typeof fetch>) =>
     fetch(...args).then((res) => res.json());
   const { data, mutate, error, isLoading } = useSWR(`/api/posts`, fetcher);
 
   const handleDelete = async (id: string) => {
-    if (confirm("are you want to delete post?")) {
-      try {
-        await fetch(`/api/posts/${id}`, {
-          method: "DELETE",
-        });
-        mutate();
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    setIsDeletePostConfirmationDialogOpen(true);
+    setIdPostDelete(id);
   };
 
   return (

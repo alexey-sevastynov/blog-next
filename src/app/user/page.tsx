@@ -16,8 +16,25 @@ const User = () => {
     fetch(...args).then((res) => res.json());
   const { data, mutate, error, isLoading } = useSWR(`/api/posts`, fetcher);
 
-  const { isLogoutConfirmationDialogOpen, setIsLogoutConfirmationDialogOpen } =
-    useGlobalContext();
+  const {
+    isLogoutConfirmationDialogOpen,
+    setIsLogoutConfirmationDialogOpen,
+    isDeletePostConfirmationDialogOpen,
+    setIsDeletePostConfirmationDialogOpen,
+    idPostDelete,
+  } = useGlobalContext();
+
+  const deletePost = async (id: string) => {
+    try {
+      await fetch(`/api/posts/${id}`, {
+        method: "DELETE",
+      });
+      mutate();
+      setIsDeletePostConfirmationDialogOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const loading = <BeatLoader className={styles.center} color="#6E3BD9" />;
   return (
@@ -45,6 +62,17 @@ const User = () => {
             btnActionNo={() => setIsLogoutConfirmationDialogOpen(false)}
           >
             You will be redirected to the login page.
+          </Confirm>
+        </div>
+      )}
+
+      {isDeletePostConfirmationDialogOpen && (
+        <div className={styles.confirmWindow}>
+          <Confirm
+            btnActionYes={() => deletePost(idPostDelete)}
+            btnActionNo={() => setIsDeletePostConfirmationDialogOpen(false)}
+          >
+            Do you really want to delete the post?
           </Confirm>
         </div>
       )}
