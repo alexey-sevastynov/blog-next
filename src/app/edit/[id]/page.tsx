@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import Button from "@/components/Button/Button";
 import { UploadButton } from "@/utils/uploadthing";
 import { UploadFileResponse } from "uploadthing/client";
+import LoadingWindow from "@/components/LoadingWindow/LoadingWindow";
 
 const CreatePost = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -81,7 +82,7 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
   }, [data]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingWindow />;
   }
 
   if (error) {
@@ -166,8 +167,6 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
             }}
           />
           {uploadImageMessage}
-
-          <p>data.image </p>
         </div>
 
         <div className={styles.btns}>
@@ -186,7 +185,7 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
             style={{ backgroundColor: COLORS.violet, color: COLORS.white }}
             btnSmall
           >
-            edit
+            apply
           </Button>
         </div>
       </form>

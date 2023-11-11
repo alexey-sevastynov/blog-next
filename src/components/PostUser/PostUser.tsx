@@ -98,13 +98,15 @@ const PostUser: React.FC<IPostUserProps> = ({
           {!isImageReady && (
             <ClipLoader className={styles.loading} color="#6E3BD9" />
           )}
-          <Image
-            src={image}
-            alt="image"
-            width={400}
-            height={400}
-            onLoad={onLoadCallBack}
-          />
+          <Link href={`/img/${_id}`}>
+            <Image
+              src={image}
+              alt="image"
+              width={400}
+              height={400}
+              onLoad={onLoadCallBack}
+            />
+          </Link>
         </div>
       )}
 

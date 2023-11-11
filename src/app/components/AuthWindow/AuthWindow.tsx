@@ -9,19 +9,14 @@ import { signIn, useSession } from "next-auth/react";
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { BeatLoader } from "react-spinners";
+import LoadingWindow from "@/components/LoadingWindow/LoadingWindow";
 
 const AuthWindow = () => {
   const session = useSession();
   const router = useRouter();
 
   if (session.status === "loading") {
-    return (
-      <section className={styles.auth}>
-        <main className={styles.authWindow}>
-          <BeatLoader color="#EFEFEF" />
-        </main>
-      </section>
-    );
+    return <LoadingWindow />;
   }
 
   if (session.status === "authenticated") {

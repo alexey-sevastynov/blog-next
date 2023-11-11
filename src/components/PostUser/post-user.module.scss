@@ -70,10 +70,13 @@
 
     display: flex;
     align-items: flex-end;
+    a {
+      display: flex;
 
-    img {
-      object-fit: cover;
-      border-radius: 0px 0px 10px 10px;
+      img {
+        object-fit: cover;
+        border-radius: 0px 0px 10px 10px;
+      }
     }
 
     .loading {
@@ -113,9 +116,12 @@
       display: flex;
       justify-content: flex-end;
       flex-grow: 1;
+      a {
+        justify-content: flex-end;
 
-      img {
-        border-radius: 0px 0px 10px 0px;
+        img {
+          border-radius: 0px 0px 10px 0px;
+        }
       }
     }
   }
@@ -165,10 +171,19 @@
 
     .imageBlock {
       height: 400px;
-
-      img {
+      a {
         width: 100%;
-        border-radius: 0px 0px 10px 10px;
+        img {
+          width: 100%;
+          border-radius: 0px 0px 10px 10px;
+        }
+      }
+
+      .loading {
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translateX(-50%) translateY(-50%);
       }
     }
   }

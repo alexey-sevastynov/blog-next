@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { UploadButton } from "@/utils/uploadthing";
 import { UploadFileResponse } from "uploadthing/client";
 import Button from "@/components/Button/Button";
+import LoadingWindow from "@/components/LoadingWindow/LoadingWindow";
 
 const CreatePost = () => {
   const session = useSession();
@@ -38,17 +39,17 @@ const CreatePost = () => {
       .then((data) => setUsers([...data]));
   const { data, mutate, error, isLoading } = useSWR(`/api/users`, fetcher);
 
-  const currentUser = users.find(
-    (user: any) => user.email === session.data?.user?.email
-  );
-  const currentSexPerson = currentUser && currentUser.sex;
-
   if (session.status == "loading") {
-    return <p>Loading</p>;
+    return <LoadingWindow />;
   }
   if (session.status == "unauthenticated") {
     router?.push("/");
   }
+
+  const currentUser = users.find(
+    (user: any) => user.email === session.data?.user?.email
+  );
+  const currentSexPerson = currentUser && currentUser.sex;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
