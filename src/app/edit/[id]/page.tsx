@@ -10,6 +10,8 @@ import Link from "next/link";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button/Button";
+import { UploadButton } from "@/utils/uploadthing";
+import { UploadFileResponse } from "uploadthing/client";
 
 const CreatePost = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -18,11 +20,22 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
     fetch(...args).then((res) => res.json());
   const { data, error, isLoading } = useSWR(`/api/posts/${params.id}`, fetcher);
 
+  const [image, setImage] = useState<UploadFileResponse[]>([]);
+
   const [formData, setFormData] = useState({
     title: "",
     desc: "",
-    image: "",
+    imageUrl: "",
   });
+
+  const uploadImageMessage = (
+    <p className={styles.success}>
+      our url:{" "}
+      <Link href={formData?.imageUrl} target="_blank">
+        {formData?.imageUrl}
+      </Link>
+    </p>
+  );
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -36,20 +49,18 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
     const form = e.target as HTMLFormElement;
     const titleInput = form.elements.namedItem("title") as HTMLInputElement;
     const descInput = form.elements.namedItem("desc") as HTMLInputElement;
-    const imageInput = form.elements.namedItem("image") as HTMLInputElement;
 
     try {
-      if (titleInput && descInput && imageInput) {
+      if (descInput) {
         const title = titleInput.value;
         const desc = descInput.value;
-        const image = imageInput.value;
 
         await fetch(`/api/posts/${params.id}`, {
           method: "PATCH",
           body: JSON.stringify({
             title,
             desc,
-            image,
+            image: image[0]?.fileUrl,
           }),
         }).finally(() => {
           form.reset();
@@ -64,7 +75,7 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
       setFormData({
         title: data.title || "",
         desc: data.desc || "",
-        image: data.image || "",
+        imageUrl: data.image || image[0]?.fileUrl,
       });
     }
   }, [data]);
@@ -102,15 +113,61 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
           >
             input description
           </Textarea>
-          <Input
-            placeholder="URL image..."
-            type="url"
-            name="image"
-            value={formData.image}
-            onChange={handleInputChange}
-          >
-            input URL image
-          </Input>
+
+          <UploadButton
+            endpoint="imageUploader"
+            appearance={{
+              button({ ready, isUploading }) {
+                return {
+                  color: COLORS.white,
+                  ...(ready && { backgroundColor: COLORS.violet }),
+                  ...(isUploading && { backgroundColor: COLORS.red }),
+                };
+              },
+              allowedContent: {
+                color: COLORS.white,
+              },
+            }}
+            content={{
+              button({ ready }) {
+                if (ready) return <div>Update Image</div>;
+
+                return "Getting ready...";
+              },
+              allowedContent({ ready, fileTypes, isUploading }) {
+                if (!ready) return "Checking what you allow";
+                if (isUploading) return "Seems like stuff is uploading";
+                return `max size file 8MB`;
+              },
+            }}
+            onClientUploadComplete={async (res) => {
+              if (res) {
+                const json = await JSON.stringify(res);
+
+                setImage(res);
+
+                await fetch("/api/uploadthing", {
+                  method: "DELETE",
+                  body: JSON.stringify({
+                    url: formData.imageUrl,
+                  }),
+                }).finally(() => {
+                  setFormData({
+                    ...formData,
+                    imageUrl: res[0].fileUrl,
+                  });
+                });
+
+                console.log(json);
+              }
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+          {uploadImageMessage}
+
+          <p>data.image </p>
         </div>
 
         <div className={styles.btns}>
