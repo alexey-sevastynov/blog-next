@@ -3,7 +3,9 @@ import Image from "next/image";
 import styles from "./page.module.scss";
 
 async function getData(id: string) {
-  const res = await fetch(`http://localhost:3000/api/posts/${id}`);
+  const res = await fetch(
+    `https://blog-next-six-phi.vercel.app/api/posts/${id}`
+  );
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
