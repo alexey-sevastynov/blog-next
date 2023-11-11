@@ -64,6 +64,7 @@
   }
 
   .imageBlock {
+    position: relative;
     width: 400px;
     height: 440px;
 
@@ -73,6 +74,12 @@
     img {
       object-fit: cover;
       border-radius: 0px 0px 10px 10px;
+    }
+
+    .loading {
+      position: absolute;
+      top: 50%;
+      right: 180px;
     }
   }
 

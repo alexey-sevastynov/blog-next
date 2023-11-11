@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import styles from "./post-user.module.scss";
 import Image from "next/image";
 import { IPostUserProps } from "./IPostUserProps.interface";
@@ -12,6 +12,7 @@ import useSWR from "swr";
 import { userAvatar } from "@/utils/userAvatar";
 import Button from "../Button/Button";
 import { useGlobalContext } from "@/app/Context/store";
+import { ClipLoader } from "react-spinners";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -28,6 +29,11 @@ const PostUser: React.FC<IPostUserProps> = ({
 
   const { setIsDeletePostConfirmationDialogOpen, setIdPostDelete } =
     useGlobalContext();
+
+  const [isImageReady, setIsImageReady] = useState(false);
+  const onLoadCallBack = (e: any) => {
+    setIsImageReady(true);
+  };
 
   const fetcher = (...args: Parameters<typeof fetch>) =>
     fetch(...args).then((res) => res.json());
@@ -89,7 +95,16 @@ const PostUser: React.FC<IPostUserProps> = ({
 
       {image && (
         <div className={styles.imageBlock}>
-          <Image src={image} alt="image" width={400} height={400} />
+          {!isImageReady && (
+            <ClipLoader className={styles.loading} color="#6E3BD9" />
+          )}
+          <Image
+            src={image}
+            alt="image"
+            width={400}
+            height={400}
+            onLoad={onLoadCallBack}
+          />
         </div>
       )}
 
