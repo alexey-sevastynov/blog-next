@@ -29,6 +29,17 @@ const User = () => {
       await fetch(`/api/posts/${id}`, {
         method: "DELETE",
       });
+
+      const urlValue = await data.find((item: IPost) => item._id === id).image;
+      if (urlValue) {
+        await fetch("/api/uploadthing", {
+          method: "DELETE",
+          body: JSON.stringify({
+            url: urlValue,
+          }),
+        });
+      }
+
       mutate();
       setIsDeletePostConfirmationDialogOpen(false);
     } catch (error) {

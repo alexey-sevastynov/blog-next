@@ -57,7 +57,7 @@ const CreatePost = () => {
     const descInput = form.elements.namedItem("desc") as HTMLInputElement;
 
     try {
-      if (titleInput && descInput && image[0].fileUrl) {
+      if (descInput) {
         const title = titleInput.value;
         const desc = descInput.value;
 
@@ -66,7 +66,7 @@ const CreatePost = () => {
           body: JSON.stringify({
             title,
             desc,
-            image: image[0].fileUrl,
+            image: image[0]?.fileUrl,
             sex: currentSexPerson,
             userPhoto: session.data?.user?.image,
             userName: session.data?.user?.name,
@@ -78,7 +78,9 @@ const CreatePost = () => {
           router?.push("/user");
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
