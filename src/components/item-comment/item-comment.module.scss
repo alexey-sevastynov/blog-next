@@ -1,0 +1,50 @@
+@import "../../app/colors";
+@import "../../app/brake-point";
+
+$margin-left: 200px;
+$margin-left-mobile: 0px;
+
+.itemComment {
+  margin-left: $margin-left;
+  padding: 20px;
+  background-color: $white;
+
+  display: flex;
+  gap: 20px;
+
+  width: calc(100% - $margin-left);
+
+  border-radius: 10px;
+
+  .blockMain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+
+    footer {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .userBlock {
+    img {
+      border-radius: 100%;
+    }
+  }
+
+  .like {
+    display: flex;
+    align-items: center;
+
+    img {
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: $tablet-breakpoint) {
+    margin-left: $margin-left-mobile;
+    width: 100%;
+  }
+}

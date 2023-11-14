@@ -8,4 +8,5 @@ export interface IPostUserProps {
   sex: "male" | "female";
   userPhoto?: string;
   email: string;
+  comments: TypeComment[] | undefined;
 }

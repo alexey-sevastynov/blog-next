@@ -33,6 +33,7 @@ export const POST = async (request: NextRequest) => {
     userPhoto,
     userName,
     email,
+    comments: [],
   });
 
   try {

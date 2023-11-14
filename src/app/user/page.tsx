@@ -10,6 +10,7 @@ import { BeatLoader } from "react-spinners";
 import Confirm from "@/components/Confirm/Confirm";
 import { useGlobalContext } from "../Context/store";
 import { signOut } from "next-auth/react";
+import ItemComment from "@/components/item-comment/ItemComment";
 
 const User = () => {
   const fetcher = (...args: Parameters<typeof fetch>) =>
@@ -63,9 +64,11 @@ const User = () => {
               image={item.image}
               sex={item.sex}
               userPhoto={item.userPhoto}
+              comments={item.comments}
             />
           ))
         : loading}
+
       {isLogoutConfirmationDialogOpen && (
         <div className={styles.confirmWindow}>
           <Confirm

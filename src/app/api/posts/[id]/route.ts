@@ -38,18 +38,29 @@ export const PATCH = async (
   request: NextRequest,
   { params }: GenerateMetadataType
 ) => {
-  const { title, desc, image } = await request.json();
+  const { title, desc, image, comment } = await request.json();
   const { id } = params;
+
   try {
     await connect();
-    await Post.updateOne(
-      { _id: id },
-      {
-        title,
-        desc,
-        image,
-      }
-    );
+    if (comment) {
+      console.log(comment, "our comment", id);
+      await Post.findByIdAndUpdate(
+        id,
+        { $push: { comments: comment } },
+        { new: true }
+      );
+    } else {
+      console.log("update");
+      await Post.updateOne(
+        { _id: id },
+        {
+          title,
+          desc,
+          image,
+        }
+      );
+    }
 
     return new NextResponse("Post has been edit", { status: 200 });
   } catch (error) {

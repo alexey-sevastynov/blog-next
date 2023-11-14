@@ -20,7 +20,7 @@ button,
 input,
 textarea {
   border: none;
-  background-color: unset;
+  background-color: $white;
   font-size: 16px;
   font-family: __Montserrat_cce811;
   cursor: pointer;
@@ -28,7 +28,6 @@ textarea {
 
 input,
 textarea {
-  background-color: $white;
 }
 
 textarea {

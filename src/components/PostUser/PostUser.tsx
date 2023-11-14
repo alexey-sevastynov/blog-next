@@ -14,6 +14,7 @@ import Button from "../Button/Button";
 import { useGlobalContext } from "@/app/Context/store";
 import { ClipLoader } from "react-spinners";
 import AddComment from "../add-comment/AddComment";
+import ItemComment from "../item-comment/ItemComment";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -25,6 +26,7 @@ const PostUser: React.FC<IPostUserProps> = ({
   sex,
   userPhoto,
   email,
+  comments,
 }) => {
   const session = useSession();
 
@@ -46,98 +48,107 @@ const PostUser: React.FC<IPostUserProps> = ({
   };
 
   return (
-    <div className={styles.post}>
-      {session.data?.user?.email === email && (
-        <div className={styles.btns}>
-          <Link href={`/edit/${_id}`}>
+    <>
+      <div className={styles.listComments}>
+        {comments &&
+          comments.map((comment: TypeComment) => (
+            <ItemComment key={comment._id} {...comment} />
+          ))}
+      </div>
+
+      <div className={styles.post}>
+        {session.data?.user?.email === email && (
+          <div className={styles.btns}>
+            <Link href={`/edit/${_id}`}>
+              <Button
+                style={{
+                  backgroundColor: COLORS.violet,
+                  color: COLORS.white,
+                  borderRadius: "10px 0px 0px 0px",
+                }}
+                iconSrc="/edit.svg"
+                btnSmall
+              >
+                edit
+              </Button>
+            </Link>
+
             <Button
+              id="btn"
+              onClick={() => handleDelete(_id)}
               style={{
-                backgroundColor: COLORS.violet,
+                backgroundColor: COLORS.red,
                 color: COLORS.white,
-                borderRadius: "10px 0px 0px 0px",
+                borderRadius: "0px 10px 0px 0px",
               }}
-              iconSrc="/edit.svg"
+              iconSrc="/delete.svg"
               btnSmall
             >
-              edit
+              delete
+            </Button>
+          </div>
+        )}
+        <div className={styles.userBlock}>
+          <Image
+            src={userAvatar(sex, userPhoto)}
+            alt="avatar"
+            width={80}
+            height={80}
+          />
+          <p className={styles.userName}>{userName}</p>
+          <p className={styles.date}>{date}</p>
+        </div>
+
+        <div className={styles.contentMessage}>
+          <header>
+            {title && <p className={styles.title}>{title}</p>}
+            <p className={styles.subtitle}>{subtitle}</p>
+          </header>
+
+          <footer>
+            <button className={styles.blockViewComments}>
+              View all comments (4)
+            </button>
+            <div className={styles.blockLikes}>
+              <Image src={"/like.svg"} alt="like" height={16.8} width={19} />
+              <p>1224 likes</p>
+            </div>
+            <AddComment _id={_id} commentedTo={userName} />
+          </footer>
+        </div>
+
+        {image && (
+          <div className={styles.imageBlock}>
+            {!isImageReady && (
+              <ClipLoader className={styles.loading} color="#6E3BD9" />
+            )}
+            <Link href={`/img/${_id}`}>
+              <Image
+                src={image}
+                alt="image"
+                width={400}
+                height={400}
+                onLoad={onLoadCallBack}
+              />
+            </Link>
+          </div>
+        )}
+
+        <div className={styles.btnMobileCreatePost}>
+          <Link href={"/create"}>
+            <Button
+              style={{
+                backgroundColor: COLORS.yellow,
+              }}
+              iconSrc="/plus.svg"
+              btnSmall
+            >
+              Create Post
             </Button>
           </Link>
-
-          <Button
-            id="btn"
-            onClick={() => handleDelete(_id)}
-            style={{
-              backgroundColor: COLORS.red,
-              color: COLORS.white,
-              borderRadius: "0px 10px 0px 0px",
-            }}
-            iconSrc="/delete.svg"
-            btnSmall
-          >
-            delete
-          </Button>
         </div>
-      )}
-      <div className={styles.userBlock}>
-        <Image
-          src={userAvatar(sex, userPhoto)}
-          alt="avatar"
-          width={80}
-          height={80}
-        />
-        <p className={styles.userName}>{userName}</p>
-        <p className={styles.date}>{date}</p>
       </div>
-
-      <div className={styles.contentMessage}>
-        <header>
-          {title && <p className={styles.title}>{title}</p>}
-          <p className={styles.subtitle}>{subtitle}</p>
-        </header>
-
-        <footer>
-          <button className={styles.blockViewComments}>
-            View all comments (4)
-          </button>
-          <div className={styles.blockLikes}>
-            <Image src={"/like.svg"} alt="like" height={16.8} width={19} />
-            <p>1224 likes</p>
-          </div>
-          <AddComment />
-        </footer>
-      </div>
-
-      {image && (
-        <div className={styles.imageBlock}>
-          {!isImageReady && (
-            <ClipLoader className={styles.loading} color="#6E3BD9" />
-          )}
-          <Link href={`/img/${_id}`}>
-            <Image
-              src={image}
-              alt="image"
-              width={400}
-              height={400}
-              onLoad={onLoadCallBack}
-            />
-          </Link>
-        </div>
-      )}
-
-      <div className={styles.btnMobileCreatePost}>
-        <Link href={"/create"}>
-          <Button
-            style={{
-              backgroundColor: COLORS.yellow,
-            }}
-            iconSrc="/plus.svg"
-            btnSmall
-          >
-            Create Post
-          </Button>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 };
 

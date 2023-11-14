@@ -32,6 +32,17 @@ const postSchema = new Schema(
       type: String,
       require: true,
     },
+    comments: [
+      {
+        _id: String,
+        commentText: String,
+        commentedBy: String,
+        commentedTo: String,
+        commentDate: String,
+        userPhoto: String,
+        likes: Number,
+      },
+    ],
   },
   { timestamps: true }
 );
