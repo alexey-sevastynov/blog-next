@@ -6,9 +6,11 @@ import { useSession } from "next-auth/react";
 const AddComment = ({
   _id,
   commentedTo,
+  setVisibleComments,
 }: {
   _id: string;
   commentedTo: string;
+  setVisibleComments: (visibleComments: boolean) => void;
 }) => {
   const session = useSession();
 
@@ -61,6 +63,7 @@ const AddComment = ({
       }).finally(() => {
         mutate();
         setText("");
+        setVisibleComments(true);
       });
     } catch (error) {
       console.log(error);

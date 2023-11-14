@@ -30,6 +30,8 @@ const PostUser: React.FC<IPostUserProps> = ({
 }) => {
   const session = useSession();
 
+  const [visibleComments, setVisibleComments] = useState(false);
+
   const { setIsDeletePostConfirmationDialogOpen, setIdPostDelete } =
     useGlobalContext();
 
@@ -51,6 +53,7 @@ const PostUser: React.FC<IPostUserProps> = ({
     <>
       <div className={styles.listComments}>
         {comments &&
+          visibleComments &&
           comments.map((comment: TypeComment) => (
             <ItemComment key={comment._id} {...comment} />
           ))}
@@ -106,14 +109,21 @@ const PostUser: React.FC<IPostUserProps> = ({
           </header>
 
           <footer>
-            <button className={styles.blockViewComments}>
-              View all comments (4)
+            <button
+              className={styles.blockViewComments}
+              onClick={() => setVisibleComments(!visibleComments)}
+            >
+              View all comments ({comments?.length})
             </button>
             <div className={styles.blockLikes}>
               <Image src={"/like.svg"} alt="like" height={16.8} width={19} />
               <p>1224 likes</p>
             </div>
-            <AddComment _id={_id} commentedTo={userName} />
+            <AddComment
+              _id={_id}
+              commentedTo={userName}
+              setVisibleComments={setVisibleComments}
+            />
           </footer>
         </div>
 
