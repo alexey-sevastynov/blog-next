@@ -13,6 +13,7 @@ import { userAvatar } from "@/utils/userAvatar";
 import Button from "../Button/Button";
 import { useGlobalContext } from "@/app/Context/store";
 import { ClipLoader } from "react-spinners";
+import AddComment from "../add-comment/AddComment";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -89,8 +90,21 @@ const PostUser: React.FC<IPostUserProps> = ({
       </div>
 
       <div className={styles.contentMessage}>
-        {title && <p className={styles.title}>{title}</p>}
-        <p className={styles.subtitle}>{subtitle}</p>
+        <header>
+          {title && <p className={styles.title}>{title}</p>}
+          <p className={styles.subtitle}>{subtitle}</p>
+        </header>
+
+        <footer>
+          <button className={styles.blockViewComments}>
+            View all comments (4)
+          </button>
+          <div className={styles.blockLikes}>
+            <Image src={"/like.svg"} alt="like" height={16.8} width={19} />
+            <p>1224 likes</p>
+          </div>
+          <AddComment />
+        </footer>
       </div>
 
       {image && (

@@ -16,6 +16,30 @@ body {
   padding: 0px 5px;
 }
 
+button,
+input,
+textarea {
+  border: none;
+  background-color: unset;
+  font-size: 16px;
+  font-family: __Montserrat_cce811;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  background-color: $white;
+}
+
+textarea {
+  resize: none;
+}
+
+textarea:focus {
+  outline: none;
+  border: none;
+}
+
 .bg-main {
   // height: 100vh;
   background-color: $white-main;
