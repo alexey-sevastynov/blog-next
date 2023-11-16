@@ -9,4 +9,5 @@ export interface IPostUserProps {
   userPhoto?: string;
   email: string;
   comments: TypeComment[] | undefined;
+  likes: number;
 }

@@ -20,4 +20,5 @@ interface IPost {
   userPhoto: string;
   sex: "male" | "female";
   comments?: TypeComment[];
+  likes: number;
 }

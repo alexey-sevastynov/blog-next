@@ -10,7 +10,6 @@ import { BeatLoader } from "react-spinners";
 import Confirm from "@/components/Confirm/Confirm";
 import { useGlobalContext } from "../Context/store";
 import { signOut } from "next-auth/react";
-import ItemComment from "@/components/item-comment/ItemComment";
 
 const User = () => {
   const fetcher = (...args: Parameters<typeof fetch>) =>
@@ -65,6 +64,7 @@ const User = () => {
               sex={item.sex}
               userPhoto={item.userPhoto}
               comments={item.comments}
+              likes={item.likes}
             />
           ))
         : loading}

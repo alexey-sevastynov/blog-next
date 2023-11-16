@@ -34,6 +34,7 @@ export const POST = async (request: NextRequest) => {
     userName,
     email,
     comments: [],
+    likes: 0,
   });
 
   try {

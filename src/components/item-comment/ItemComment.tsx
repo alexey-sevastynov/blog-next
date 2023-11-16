@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./item-comment.module.scss";
 import Image from "next/image";
 
 import { formatDuration } from "@/utils/formatDuration";
+import LikeIcon from "../LikeIcon/LikeIcon";
+import { COLORS } from "@/constants/colors";
+import useSWR from "swr";
+import { useSession } from "next-auth/react";
+import Confirm from "../Confirm/Confirm";
 
 const ItemComment: React.FC<IItemComment> = ({
+  idPost,
   _id,
   commentText,
   commentedBy,
@@ -13,9 +19,52 @@ const ItemComment: React.FC<IItemComment> = ({
   userPhoto,
   likes,
 }) => {
+  const session = useSession();
+  const [isActiveLike, setisActiveLike] = useState(false);
+  const [likesCount, setLikesCount] = useState(likes || 0);
+
   const date: Date = new Date(commentDate);
   const now: Date = new Date();
   const difference: number = now.getTime() - date.getTime();
+
+  const fetcher = (...args: Parameters<typeof fetch>) =>
+    fetch(...args).then((res) => res.json());
+  const { data, mutate, error, isLoading } = useSWR(`/api/posts`, fetcher);
+
+  const setLikes = async () => {
+    const active = !isActiveLike;
+
+    const updatedComment = {
+      _id,
+      likes: active ? likesCount + 1 : likesCount - 1,
+    };
+
+    try {
+      await fetch(`/api/posts/${idPost}`, {
+        method: "PATCH",
+        body: JSON.stringify({ comment: updatedComment, active }),
+      }).finally(() => {
+        setLikesCount(active ? likesCount + 1 : likesCount - 1);
+        mutate();
+        setisActiveLike(active);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteComment = async () => {
+    try {
+      await fetch(`/api/posts/${idPost}`, {
+        method: "PATCH",
+        body: JSON.stringify({ comment: { _id }, isDelete: true }),
+      }).finally(() => {
+        mutate();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={styles.itemComment}>
@@ -29,12 +78,23 @@ const ItemComment: React.FC<IItemComment> = ({
         <footer>
           <p>{formatDuration(difference)}</p>
           <p>likes: {likes}</p>
-          <button>answer</button>
+
+          {commentedBy === session.data?.user?.name ? (
+            <button onClick={deleteComment}>delete</button>
+          ) : (
+            <button>answer</button>
+          )}
         </footer>
       </div>
 
       <div className={styles.like}>
-        <Image src={"/like.svg"} alt="like" width={18} height={16.8} />
+        <LikeIcon
+          fillColor={isActiveLike ? COLORS.red : "none"}
+          strokeColor={isActiveLike ? COLORS.red : "black"}
+          onClick={setLikes}
+          height={16.8}
+          width={19}
+        />
       </div>
     </div>
   );

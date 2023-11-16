@@ -15,6 +15,7 @@ import { useGlobalContext } from "@/app/Context/store";
 import { ClipLoader } from "react-spinners";
 import AddComment from "../add-comment/AddComment";
 import ItemComment from "../item-comment/ItemComment";
+import LikeIcon from "../LikeIcon/LikeIcon";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -27,10 +28,15 @@ const PostUser: React.FC<IPostUserProps> = ({
   userPhoto,
   email,
   comments,
+  likes,
 }) => {
   const session = useSession();
 
   const [visibleComments, setVisibleComments] = useState(false);
+  const [likesCount, setLikesCount] = useState(likes || 0);
+  const [isActiveLike, setisActiveLike] = useState(false);
+
+  const countComments = comments?.length;
 
   const { setIsDeletePostConfirmationDialogOpen, setIdPostDelete } =
     useGlobalContext();
@@ -49,16 +55,27 @@ const PostUser: React.FC<IPostUserProps> = ({
     setIdPostDelete(id);
   };
 
-  return (
-    <>
-      <div className={styles.listComments}>
-        {comments &&
-          visibleComments &&
-          comments.map((comment: TypeComment) => (
-            <ItemComment key={comment._id} {...comment} />
-          ))}
-      </div>
+  const setLikes = async () => {
+    const active = !isActiveLike;
 
+    try {
+      await fetch(`/api/posts/${_id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          likes: likesCount,
+          active: active,
+        }),
+      }).finally(() => {
+        mutate();
+        setisActiveLike(active);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div className={styles.postBlock}>
       <div className={styles.post}>
         {session.data?.user?.email === email && (
           <div className={styles.btns}>
@@ -113,11 +130,18 @@ const PostUser: React.FC<IPostUserProps> = ({
               className={styles.blockViewComments}
               onClick={() => setVisibleComments(!visibleComments)}
             >
-              View all comments ({comments?.length})
+              {countComments ? `View all comments (${countComments})` : ""}
             </button>
             <div className={styles.blockLikes}>
-              <Image src={"/like.svg"} alt="like" height={16.8} width={19} />
-              <p>1224 likes</p>
+              <LikeIcon
+                fillColor={isActiveLike ? COLORS.red : "none"}
+                strokeColor={isActiveLike ? COLORS.red : "black"}
+                onClick={setLikes}
+                height={16.8}
+                width={19}
+              />
+
+              <p>{likes ? likes : 0} likes</p>
             </div>
             <AddComment
               _id={_id}
@@ -158,7 +182,15 @@ const PostUser: React.FC<IPostUserProps> = ({
           </Link>
         </div>
       </div>
-    </>
+
+      <div className={styles.listComments}>
+        {comments &&
+          visibleComments &&
+          comments.map((comment: TypeComment) => (
+            <ItemComment key={comment._id} {...comment} idPost={_id} />
+          ))}
+      </div>
+    </div>
   );
 };
 

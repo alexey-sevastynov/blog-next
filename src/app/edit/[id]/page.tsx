@@ -166,7 +166,7 @@ const CreatePost = ({ params }: { params: { id: string } }) => {
               alert(`ERROR! ${error.message}`);
             }}
           />
-          {uploadImageMessage}
+          {formData.imageUrl && uploadImageMessage}
         </div>
 
         <div className={styles.btns}>

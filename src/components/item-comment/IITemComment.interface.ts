@@ -1,4 +1,5 @@
 interface IItemComment {
+  idPost: string;
   _id: string;
   commentText: string;
   commentedBy: string;
