@@ -183,6 +183,7 @@
       .btnMobileCreatePost {
         display: block;
         position: fixed;
+        z-index: 100;
         bottom: 10px;
         right: 15px;
       }
