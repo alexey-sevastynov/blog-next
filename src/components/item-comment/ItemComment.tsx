@@ -8,6 +8,8 @@ import { COLORS } from "@/constants/colors";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 import Confirm from "../Confirm/Confirm";
+import { setLocalStorage } from "@/utils/setLocalStorage";
+import { getLocalStorage } from "@/utils/getLocalStorage";
 
 const ItemComment: React.FC<IItemComment> = ({
   idPost,
@@ -20,7 +22,9 @@ const ItemComment: React.FC<IItemComment> = ({
   likes,
 }) => {
   const session = useSession();
-  const [isActiveLike, setisActiveLike] = useState(false);
+  const [isActiveLike, setisActiveLike] = useState(
+    getLocalStorage(`activeLike:${_id}`)
+  );
   const [likesCount, setLikesCount] = useState(likes || 0);
 
   const date: Date = new Date(commentDate);
@@ -46,6 +50,7 @@ const ItemComment: React.FC<IItemComment> = ({
       }).finally(() => {
         setLikesCount(active ? likesCount + 1 : likesCount - 1);
         mutate();
+        setLocalStorage(`activeLike:${_id}`, active);
         setisActiveLike(active);
       });
     } catch (error) {
@@ -79,18 +84,18 @@ const ItemComment: React.FC<IItemComment> = ({
           <p>{formatDuration(difference)}</p>
           <p>likes: {likes}</p>
 
-          {commentedBy === session.data?.user?.name ? (
+          {commentedBy === session.data?.user?.name && (
             <button onClick={deleteComment}>delete</button>
-          ) : (
-            <button>answer</button>
           )}
         </footer>
       </div>
 
       <div className={styles.like}>
         <LikeIcon
-          fillColor={isActiveLike ? COLORS.red : "none"}
-          strokeColor={isActiveLike ? COLORS.red : "black"}
+          fillColor={getLocalStorage(`activeLike:${_id}`) ? COLORS.red : "none"}
+          strokeColor={
+            getLocalStorage(`activeLike:${_id}`) ? COLORS.red : "black"
+          }
           onClick={setLikes}
           height={16.8}
           width={19}

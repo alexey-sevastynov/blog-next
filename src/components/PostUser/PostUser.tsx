@@ -17,12 +17,8 @@ import AddComment from "../add-comment/AddComment";
 import ItemComment from "../item-comment/ItemComment";
 import LikeIcon from "../LikeIcon/LikeIcon";
 
-import { RootState } from "@/app/GlobalRedux/store";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  increment,
-  decrement,
-} from "@/app/GlobalRedux/Features/counter/counterSlice";
+import { setLocalStorage } from "@/utils/setLocalStorage";
+import { getLocalStorage } from "@/utils/getLocalStorage";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -39,12 +35,11 @@ const PostUser: React.FC<IPostUserProps> = ({
 }) => {
   const session = useSession();
 
-  const count = useSelector((state: RootState) => state.counter.value);
-  const dispatch = useDispatch();
-
   const [visibleComments, setVisibleComments] = useState(false);
   const [likesCount, setLikesCount] = useState(likes || 0);
-  const [isActiveLike, setisActiveLike] = useState(false);
+  const [isActiveLike, setisActiveLike] = useState(
+    getLocalStorage(`activeLike:${_id}`)
+  );
 
   const countComments = comments?.length;
 
@@ -84,6 +79,7 @@ const PostUser: React.FC<IPostUserProps> = ({
         }
 
         mutate();
+        setLocalStorage(`activeLike:${_id}`, active);
         setisActiveLike(active);
       });
     } catch (error) {
@@ -151,17 +147,18 @@ const PostUser: React.FC<IPostUserProps> = ({
             </button>
             <div className={styles.blockLikes}>
               <LikeIcon
-                fillColor={isActiveLike ? COLORS.red : "none"}
-                strokeColor={isActiveLike ? COLORS.red : "black"}
+                fillColor={
+                  getLocalStorage(`activeLike:${_id}`) ? COLORS.red : "none"
+                }
+                strokeColor={
+                  getLocalStorage(`activeLike:${_id}`) ? COLORS.red : "black"
+                }
                 onClick={setLikes}
                 height={16.8}
                 width={19}
               />
 
               <p>{likes ? likesCount : 0} likes</p>
-              <button onClick={() => dispatch(decrement())}>-</button>
-              <span>{count}</span>
-              <button onClick={() => dispatch(increment())}>+</button>
             </div>
             <AddComment
               _id={_id}
