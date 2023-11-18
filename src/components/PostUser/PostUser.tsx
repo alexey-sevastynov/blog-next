@@ -19,6 +19,7 @@ import LikeIcon from "../LikeIcon/LikeIcon";
 
 import { setLocalStorage } from "@/utils/setLocalStorage";
 import { getLocalStorage } from "@/utils/getLocalStorage";
+import { newLineInText } from "@/utils/newLineInText";
 
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
@@ -135,7 +136,7 @@ const PostUser: React.FC<IPostUserProps> = ({
         <div className={styles.contentMessage}>
           <header>
             {title && <p className={styles.title}>{title}</p>}
-            <p className={styles.subtitle}>{subtitle}</p>
+            <div className={styles.subtitle}>{newLineInText(subtitle)}</div>
           </header>
 
           <footer>
