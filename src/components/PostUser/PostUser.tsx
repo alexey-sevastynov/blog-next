@@ -17,6 +17,13 @@ import AddComment from "../add-comment/AddComment";
 import ItemComment from "../item-comment/ItemComment";
 import LikeIcon from "../LikeIcon/LikeIcon";
 
+import { RootState } from "@/app/GlobalRedux/store";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  increment,
+  decrement,
+} from "@/app/GlobalRedux/Features/counter/counterSlice";
+
 const PostUser: React.FC<IPostUserProps> = ({
   _id,
   title,
@@ -31,6 +38,9 @@ const PostUser: React.FC<IPostUserProps> = ({
   likes,
 }) => {
   const session = useSession();
+
+  const count = useSelector((state: RootState) => state.counter.value);
+  const dispatch = useDispatch();
 
   const [visibleComments, setVisibleComments] = useState(false);
   const [likesCount, setLikesCount] = useState(likes || 0);
@@ -66,6 +76,13 @@ const PostUser: React.FC<IPostUserProps> = ({
           active: active,
         }),
       }).finally(() => {
+        if (isActiveLike) {
+          setLikesCount(likesCount - 1);
+        }
+        if (!isActiveLike) {
+          setLikesCount(likesCount + 1);
+        }
+
         mutate();
         setisActiveLike(active);
       });
@@ -141,7 +158,10 @@ const PostUser: React.FC<IPostUserProps> = ({
                 width={19}
               />
 
-              <p>{likes ? likes : 0} likes</p>
+              <p>{likes ? likesCount : 0} likes</p>
+              <button onClick={() => dispatch(decrement())}>-</button>
+              <span>{count}</span>
+              <button onClick={() => dispatch(increment())}>+</button>
             </div>
             <AddComment
               _id={_id}
