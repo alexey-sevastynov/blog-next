@@ -4,7 +4,8 @@ import styles from "./page.module.scss";
 
 async function getData(id: string) {
   const res = await fetch(
-    `https://blog-next-six-phi.vercel.app/api/posts/${id}`
+    `https://blog-next-six-phi.vercel.app/api/posts/${id}`,
+    { next: { revalidate: 1 } }
   );
 
   if (!res.ok) {
