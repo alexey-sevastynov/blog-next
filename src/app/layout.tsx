@@ -16,6 +16,7 @@ const inter = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "My Blog",
   description: "My next app for create posts",
+  icons: { icon: "/logo.png" },
 };
 
 export default function RootLayout({
